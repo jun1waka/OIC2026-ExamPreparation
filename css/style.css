@@ -19,6 +19,8 @@ body {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     overflow: hidden; /* 子要素の角丸を適用させるため */
+    display: flex;
+    flex-direction: column;
 }
 
 .challenge-card:hover {
@@ -42,22 +44,34 @@ body {
     word-wrap: break-word;
     background-color: #1e293b; /* bg-slate-800 */
     color: #e2e8f0; /* text-slate-200 */
+    flex-grow: 1;
     min-height: 80px;
 }
 
-/* DOM操作用のボタンのスタイル */
-.dom-button {
+/* DOM操作用のボタンスタイル */
+.dom-button, .dom-input {
     display: inline-block;
     padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 0.375rem; /* 6px */
+    border: 1px solid #d1d5db; /* border-gray-300 */
+}
+
+.dom-button {
     background-color: #4f46e5; /* bg-indigo-600 */
     color: white;
     font-weight: 500;
-    border-radius: 0.375rem; /* 6px */
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
-    margin-top: 0.5rem;
+    border-color: transparent;
 }
 
 .dom-button:hover {
     background-color: #4338ca; /* bg-indigo-700 */
+}
+
+.dom-input {
+    background-color: white;
+    color: #111827; /* text-gray-900 */
 }
