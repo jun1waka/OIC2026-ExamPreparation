@@ -1,432 +1,476 @@
-/**
- * JavaScript 30本ノック
- *
- * このファイルには、JavaScriptの基本を学ぶための30個の課題が含まれています。
- * 各課題は `challenges` 配列にオブジェクトとして格納されています。
- * ブラウザで index.html を開くと、各課題の実行結果が画面に表示されます。
- */
-
 // 即時実行関数でグローバルスコープの汚染を防ぎます
-(function() {
+(async function() {
     'use strict';
 
     // 課題を格納する配列
     const challenges = [
-        // 1. Hello Worldの表示
         {
-            title: '1. Hello Worldの表示',
+            title: '31. 配列の重複を削除',
             func: () => {
-                return 'Hello, World!';
+                const array = [1, 2, 'a', 2, 3, 'b', 'a', 4, 5, 5];
+                const uniqueArray = [...new Set(array)];
+                return `元の配列: [${array.join(', ')}]\n重複削除後: [${uniqueArray.join(', ')}]`;
             }
         },
-
-        // 2. 数値の足し算
         {
-            title: '2. 数値の足し算',
+            title: '32. 文字列内の文字数カウント',
             func: () => {
-                const num1 = 10;
-                const num2 = 5;
-                return `${num1} + ${num2} = ${num1 + num2}`;
+                const text = 'abracadabra';
+                const char = 'a';
+                const count = text.split(char).length - 1;
+                return `「${text}」の中の「${char}」の数は ${count} 個です。`;
             }
         },
-
-        // 3. 文字列の結合
         {
-            title: '3. 文字列の結合',
+            title: '33. 配列のシャッフル',
             func: () => {
-                const str1 = 'こんにちは';
-                const str2 = 'JavaScript';
-                return `${str1}、${str2}！`;
+                const array = [1, 2, 3, 4, 5];
+                const original = `元の配列: [${array.join(', ')}]`;
+                // Fisher-Yates shuffle
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return `${original}\nシャッフル後: [${array.join(', ')}]`;
             }
         },
-
-        // 4. 定数の利用
         {
-            title: '4. 定数の利用',
+            title: '34. オブジェクトの配列をソート',
             func: () => {
-                const TAX_RATE = 1.1;
-                const price = 1000;
-                return `価格${price}円の税込価格は${price * TAX_RATE}円です。`;
+                const users = [
+                    { name: 'Bob', age: 30 },
+                    { name: 'Alice', age: 25 },
+                    { name: 'Charlie', age: 35 }
+                ];
+                users.sort((a, b) => a.age - b.age);
+                return users;
             }
         },
-
-        // 5. 配列の作成と要素の取得
         {
-            title: '5. 配列の作成と要素の取得',
+            title: '35. 回文（パリンドローム）判定',
             func: () => {
-                const fruits = ['りんご', 'バナナ', 'みかん'];
-                return `配列の2番目の要素は「${fruits[1]}」です。`;
-            }
-        },
-
-        // 6. オブジェクトの作成とプロパティの取得
-        {
-            title: '6. オブジェクトの作成とプロパティの取得',
-            func: () => {
-                const user = {
-                    name: '山田太郎',
-                    age: 28,
-                    job: 'エンジニア'
+                const checkPalindrome = (str) => {
+                    const reversed = str.split('').reverse().join('');
+                    return str === reversed;
                 };
-                return `名前: ${user.name}, 年齢: ${user.age}`;
+                const str1 = 'level';
+                const str2 = 'hello';
+                return `「${str1}」は回文か？ -> ${checkPalindrome(str1)}\n「${str2}」は回文か？ -> ${checkPalindrome(str2)}`;
             }
         },
-
-        // 7. if/else文による条件分岐
         {
-            title: '7. if/else文による条件分岐',
+            title: '36. フィボナッチ数列',
             func: () => {
-                const age = 20;
-                let message;
-                if (age >= 20) {
-                    message = '成人です。';
-                } else {
-                    message = '未成年です。';
+                const fibonacci = (n) => {
+                    if (n <= 1) return n;
+                    let a = 0, b = 1;
+                    for (let i = 2; i <= n; i++) {
+                        [a, b] = [b, a + b];
+                    }
+                    return b;
+                };
+                const n = 10;
+                return `フィボナッチ数列の${n}番目は ${fibonacci(n)} です。`;
+            }
+        },
+        {
+            title: '37. JSONとオブジェクトの変換',
+            func: () => {
+                const obj = { id: 1, name: 'Taro', isStudent: true };
+                const jsonString = JSON.stringify(obj, null, 2);
+                const parsedObj = JSON.parse(jsonString);
+                return `オブジェクト -> JSON:\n${jsonString}\n\nJSON -> オブジェクトのid: ${parsedObj.id}`;
+            }
+        },
+        {
+            title: '38. setTimeoutによる遅延実行',
+            func: (card) => {
+                const resultDiv = card.querySelector('.result');
+                resultDiv.textContent = '3秒後にコンソールにメッセージが表示されます。';
+                setTimeout(() => {
+                    console.log('課題38: 3秒経過しました！');
+                }, 3000);
+                return null;
+            }
+        },
+        {
+            title: '39. setIntervalによる繰り返し実行',
+            func: (card) => {
+                const resultDiv = card.querySelector('.result');
+                resultDiv.textContent = '2秒ごとにコンソールに時刻が表示されます（10秒後に停止）。';
+                let count = 0;
+                const intervalId = setInterval(() => {
+                    console.log(`課題39: ${new Date().toLocaleTimeString()}`);
+                    count++;
+                    if (count >= 5) {
+                        clearInterval(intervalId);
+                        console.log('課題39: 停止しました。');
+                    }
+                }, 2000);
+                return null;
+            }
+        },
+        {
+            title: '40. 例外処理 try...catch',
+            func: () => {
+                try {
+                    // 存在しない関数を呼び出してエラーを発生させる
+                    nonExistentFunction();
+                } catch (error) {
+                    return `エラーをキャッチしました:\n- 名前: ${error.name}\n- メッセージ: ${error.message}`;
                 }
-                return `年齢が${age}歳なので、${message}`;
             }
         },
-
-        // 8. forループによる繰り返し処理
         {
-            title: '8. forループによる繰り返し処理',
+            title: '41. 現在の日付を指定フォーマットで表示',
             func: () => {
-                let result = '1から5までの数字: ';
-                for (let i = 1; i <= 5; i++) {
-                    result += i + ' ';
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                return `今日は ${year}-${month}-${day} です。`;
+            }
+        },
+        {
+            title: '42. 配列内の最大値・最小値',
+            func: () => {
+                const numbers = [10, 2, 8, 42, 1, 99];
+                let max = numbers[0];
+                let min = numbers[0];
+                for (let i = 1; i < numbers.length; i++) {
+                    if (numbers[i] > max) max = numbers[i];
+                    if (numbers[i] < min) min = numbers[i];
                 }
-                return result.trim();
+                return `配列 [${numbers.join(', ')}]\n最大値: ${max}, 最小値: ${min}`;
             }
         },
-
-        // 9. 配列の全要素を出力
         {
-            title: '9. 配列の全要素を出力',
+            title: '43. 2つの配列の共通要素',
             func: () => {
-                const colors = ['赤', '青', '緑'];
-                let result = '色のリスト:\n';
-                colors.forEach(color => {
-                    result += `- ${color}\n`;
+                const arr1 = [1, 2, 3, 4, 5];
+                const arr2 = [4, 5, 6, 7, 8];
+                const common = arr1.filter(item => arr2.includes(item));
+                return `配列1: [${arr1.join(', ')}]\n配列2: [${arr2.join(', ')}]\n共通要素: [${common.join(', ')}]`;
+            }
+        },
+        {
+            title: '44. キャメルケースとスネークケースの変換',
+            func: () => {
+                const snake = 'hello-world-javascript';
+                const camel = snake.split('-').map((word, index) => {
+                    return index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1);
+                }).join('');
+                return `変換前: ${snake}\n変換後: ${camel}`;
+            }
+        },
+        {
+            title: '45. 素数判定',
+            func: () => {
+                const isPrime = (num) => {
+                    if (num <= 1) return false;
+                    for (let i = 2; i <= Math.sqrt(num); i++) {
+                        if (num % i === 0) return false;
+                    }
+                    return true;
+                };
+                const n1 = 17, n2 = 18;
+                return `${n1}は素数か？ -> ${isPrime(n1)}\n${n2}は素数か？ -> ${isPrime(n2)}`;
+            }
+        },
+        {
+            title: '46. sliceとspliceの違い',
+            func: () => {
+                const arr1 = ['a', 'b', 'c', 'd', 'e'];
+                const arr2 = [...arr1];
+                
+                const sliced = arr1.slice(1, 3); // 1番目から3番目の直前まで
+                const spliced = arr2.splice(1, 2, 'X'); // 1番目から2つ削除し'X'を挿入
+
+                return `元の配列: ['a', 'b', 'c', 'd', 'e']\n\n` +
+                       `slice(1, 3)の結果: [${sliced.join(', ')}]\n` +
+                       `slice後の元の配列: [${arr1.join(', ')}]\n\n` +
+                       `splice(1, 2, 'X')の結果: [${spliced.join(', ')}]\n` +
+                       `splice後の元の配列: [${arr2.join(', ')}]`;
+            }
+        },
+        {
+            title: '47. findとfilterの違い',
+            func: () => {
+                const users = [{id:1, name:'A'}, {id:2, name:'B'}, {id:3, name:'C'}];
+                const found = users.find(u => u.id > 1);
+                const filtered = users.filter(u => u.id > 1);
+                return `findの結果 (要素): ${JSON.stringify(found)}\n` +
+                       `filterの結果 (配列): ${JSON.stringify(filtered)}`;
+            }
+        },
+        {
+            title: '48. Object.entriesの利用',
+            func: () => {
+                const user = { name: 'Jiro', age: 40 };
+                const entries = Object.entries(user);
+                return entries;
+            }
+        },
+        {
+            title: '49. クラスの追加・削除・切り替え',
+            func: (card) => {
+                const resultDiv = card.querySelector('.result');
+                const p = document.createElement('p');
+                p.textContent = '下のボタンを押してください。';
+                p.id = 'class-toggle-text';
+                p.style.transition = 'all 0.3s';
+
+                const btnAdd = document.createElement('button');
+                btnAdd.textContent = 'クラス追加(赤色)';
+                btnAdd.className = 'dom-button';
+                btnAdd.addEventListener('click', () => {
+                    p.classList.add('text-red-400');
                 });
-                return result.trim();
-            }
-        },
 
-        // 10. FizzBuzz問題
-        {
-            title: '10. FizzBuzz問題',
-            func: () => {
-                let result = '';
-                for (let i = 1; i <= 15; i++) {
-                    if (i % 15 === 0) {
-                        result += 'FizzBuzz ';
-                    } else if (i % 3 === 0) {
-                        result += 'Fizz ';
-                    } else if (i % 5 === 0) {
-                        result += 'Buzz ';
-                    } else {
-                        result += i + ' ';
-                    }
-                }
-                return result.trim();
-            }
-        },
-
-        // 11. 関数の定義と呼び出し
-        {
-            title: '11. 関数の定義と呼び出し',
-            func: () => {
-                function greet() {
-                    return 'こんにちは！';
-                }
-                return greet();
-            }
-        },
-        
-        // 12. 引数を持つ関数
-        {
-            title: '12. 引数を持つ関数',
-            func: () => {
-                function greetUser(name) {
-                    return `${name}さん、こんにちは！`;
-                }
-                return greetUser('鈴木');
-            }
-        },
-
-        // 13. 戻り値を持つ関数
-        {
-            title: '13. 戻り値を持つ関数',
-            func: () => {
-                function add(a, b) {
-                    return a + b;
-                }
-                const sum = add(5, 3);
-                return `5 + 3 の計算結果は ${sum} です。`;
-            }
-        },
-
-        // 14. 配列の要素数を取得
-        {
-            title: '14. 配列の要素数を取得',
-            func: () => {
-                const animals = ['犬', '猫', '鳥', '魚'];
-                return `動物の数は ${animals.length} 匹です。`;
-            }
-        },
-
-        // 15. 配列に要素を追加 (push)
-        {
-            title: '15. 配列に要素を追加 (push)',
-            func: () => {
-                const numbers = [1, 2, 3];
-                const original = `元の配列: [${numbers.join(', ')}]`;
-                numbers.push(4);
-                const modified = `push後の配列: [${numbers.join(', ')}]`;
-                return `${original}\n${modified}`;
-            }
-        },
-        
-        // 16. 配列の最後の要素を削除 (pop)
-        {
-            title: '16. 配列の最後の要素を削除 (pop)',
-            func: () => {
-                const numbers = [1, 2, 3, 4];
-                const original = `元の配列: [${numbers.join(', ')}]`;
-                const popped = numbers.pop();
-                const modified = `pop後の配列: [${numbers.join(', ')}]`;
-                return `${original}\n削除された要素: ${popped}\n${modified}`;
-            }
-        },
-
-        // 17. for...ofループによる配列処理
-        {
-            title: '17. for...ofループによる配列処理',
-            func: () => {
-                const vegetables = ['トマト', 'きゅうり', 'なす'];
-                let result = '野菜リスト:\n';
-                for (const vegetable of vegetables) {
-                    result += `- ${vegetable}\n`;
-                }
-                return result.trim();
-            }
-        },
-
-        // 18. 配列の各要素を2倍にする (map)
-        {
-            title: '18. 配列の各要素を2倍にする (map)',
-            func: () => {
-                const numbers = [1, 2, 3, 4, 5];
-                const doubled = numbers.map(num => num * 2);
-                return `[${numbers.join(', ')}] を2倍にすると [${doubled.join(', ')}]`;
-            }
-        },
-
-        // 19. 配列から奇数の要素のみを抽出 (filter)
-        {
-            title: '19. 配列から奇数を抽出 (filter)',
-            func: () => {
-                const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-                const odds = numbers.filter(num => num % 2 !== 0);
-                return `[${numbers.join(', ')}] の中の奇数は [${odds.join(', ')}]`;
-            }
-        },
-
-        // 20. 配列の全要素を合計する (reduce)
-        {
-            title: '20. 配列の全要素を合計 (reduce)',
-            func: () => {
-                const numbers = [10, 20, 30, 40];
-                const sum = numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-                return `[${numbers.join(', ')}] の合計は ${sum}`;
-            }
-        },
-
-        // 21. オブジェクトのプロパティを変更
-        {
-            title: '21. オブジェクトのプロパティを変更',
-            func: () => {
-                const book = { title: '吾輩は猫である', author: '夏目漱石', price: 500 };
-                const original = `変更前: ${book.price}円`;
-                book.price = 600;
-                const modified = `変更後: ${book.price}円`;
-                return `${original}\n${modified}`;
-            }
-        },
-
-        // 22. オブジェクトに新しいプロパティを追加
-        {
-            title: '22. オブジェクトにプロパティを追加',
-            func: () => {
-                const person = { name: '田中' };
-                const original = `追加前: ${Object.keys(person).join(', ')}`;
-                person.age = 30;
-                const modified = `追加後: ${Object.keys(person).join(', ')}`;
-                return `${original}\n${modified}\n追加されたプロパティ: age=${person.age}`;
-            }
-        },
-
-        // 23. 文字列の長さを取得
-        {
-            title: '23. 文字列の長さを取得',
-            func: () => {
-                const text = 'JavaScript';
-                return `「${text}」の長さは ${text.length} 文字です。`;
-            }
-        },
-
-        // 24. 文字列を逆にする
-        {
-            title: '24. 文字列を逆にする',
-            func: () => {
-                const text = 'abcdef';
-                const reversed = text.split('').reverse().join('');
-                return `「${text}」を逆にすると「${reversed}」`;
-            }
-        },
-
-        // 25. 2つの数値のうち大きい方を返す関数
-        {
-            title: '25. 大きい方の数値を返す',
-            func: () => {
-                function getMax(a, b) {
-                    return Math.max(a, b);
-                }
-                const num1 = 18;
-                const num2 = 42;
-                return `${num1}と${num2}では、${getMax(num1, num2)}の方が大きい。`;
-            }
-        },
-
-        // 26. 数値が偶数か奇数かを判定する関数
-        {
-            title: '26. 偶数か奇数かを判定',
-            func: () => {
-                function checkEvenOrOdd(num) {
-                    return num % 2 === 0 ? '偶数' : '奇数';
-                }
-                const num1 = 7;
-                const num2 = 10;
-                return `${num1}は${checkEvenOrOdd(num1)}です。\n${num2}は${checkEvenOrOdd(num2)}です。`;
-            }
-        },
-
-        // 27. 1から100までの数値を合計する
-        {
-            title: '27. 1から100までの合計',
-            func: () => {
-                let sum = 0;
-                for (let i = 1; i <= 100; i++) {
-                    sum += i;
-                }
-                return `1から100までを合計すると ${sum} です。`;
-            }
-        },
-
-        // 28. 九九の表を生成
-        {
-            title: '28. 九九の表を生成 (5の段まで)',
-            func: () => {
-                let table = '';
-                for (let i = 1; i <= 5; i++) { // 見やすくするため5の段まで
-                    for (let j = 1; j <= 9; j++) {
-                        table += `${i}x${j}=${(i*j).toString().padStart(2, ' ')} | `;
-                    }
-                    table += '\n';
-                }
-                return table.trim();
-            }
-        },
-        
-        // 29. 簡単な電卓機能（switch文）
-        {
-            title: '29. 簡単な電卓機能（switch文）',
-            func: () => {
-                function calculate(operator, a, b) {
-                    switch (operator) {
-                        case '+': return a + b;
-                        case '-': return a - b;
-                        case '*': return a * b;
-                        case '/': return b !== 0 ? a / b : 'ゼロ除算エラー';
-                        default: return '無効な演算子';
-                    }
-                }
-                const op = '*';
-                const n1 = 7, n2 = 6;
-                return `${n1} ${op} ${n2} = ${calculate(op, n1, n2)}`;
-            }
-        },
-
-        // 30. DOM操作：ボタンクリックでテキストを変更
-        {
-            title: '30. DOM操作：ボタンクリックでテキスト変更',
-            func: (cardElement) => {
-                // この課題は特殊で、HTML要素を直接操作します
-                const resultDiv = cardElement.querySelector('.result');
-                
-                // 初期テキストとボタンを設定
-                const textElement = document.createElement('p');
-                textElement.id = 'dom-text';
-                textElement.textContent = '下のボタンを押してください。';
-                
-                const button = document.createElement('button');
-                button.textContent = 'テキスト変更';
-                button.className = 'dom-button';
-                
-                // addEventListenerを使用してイベントを登録
-                button.addEventListener('click', () => {
-                    const targetText = document.getElementById('dom-text');
-                    targetText.textContent = 'テキストが変更されました！';
-                    targetText.style.color = '#67e8f9'; // cyan-300
-                    targetText.style.fontWeight = 'bold';
+                const btnRemove = document.createElement('button');
+                btnRemove.textContent = 'クラス削除';
+                btnRemove.className = 'dom-button';
+                btnRemove.addEventListener('click', () => {
+                    p.classList.remove('text-red-400');
                 });
                 
-                // 結果表示エリアをクリアして新しい要素を追加
+                const btnToggle = document.createElement('button');
+                btnToggle.textContent = 'クラス切替';
+                btnToggle.className = 'dom-button';
+                btnToggle.addEventListener('click', () => {
+                    p.classList.toggle('text-red-400');
+                });
+
                 resultDiv.innerHTML = '';
-                resultDiv.appendChild(textElement);
-                resultDiv.appendChild(button);
+                resultDiv.appendChild(p);
+                resultDiv.appendChild(btnAdd);
+                resultDiv.appendChild(btnRemove);
+                resultDiv.appendChild(btnToggle);
+                return null;
+            }
+        },
+        {
+            title: '50. フォーム入力値の取得',
+            func: (card) => {
+                const resultDiv = card.querySelector('.result');
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = '何か入力してください';
+                input.className = 'dom-input';
                 
-                // この関数は表示用のテキストを返さない
-                return null; 
+                const p = document.createElement('p');
+                p.textContent = '入力値: ';
+
+                input.addEventListener('input', (event) => {
+                    p.textContent = `入力値: ${event.target.value}`;
+                });
+                
+                resultDiv.innerHTML = '';
+                resultDiv.appendChild(input);
+                resultDiv.appendChild(p);
+                return null;
+            }
+        },
+        {
+            title: '51. 正規表現によるメールアドレス検証',
+            func: () => {
+                const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                const email1 = 'test@example.com';
+                const email2 = 'invalid-email';
+                return `${email1} -> ${regex.test(email1)}\n${email2} -> ${regex.test(email2)}`;
+            }
+        },
+        {
+            title: '52. 階乗の計算',
+            func: () => {
+                const factorial = (n) => {
+                    if (n < 0) return '負の数は計算できません';
+                    if (n === 0) return 1;
+                    let result = 1;
+                    for (let i = n; i > 0; i--) {
+                        result *= i;
+                    }
+                    return result;
+                }
+                return `5! = ${factorial(5)}`;
+            }
+        },
+        {
+            title: '53. 多次元配列の平坦化',
+            func: () => {
+                const nested = [[1, 2], [3, 4, [5, 6]], 7];
+                return `元の配列: ${JSON.stringify(nested)}\n` +
+                       `flat(1): [${nested.flat().join(', ')}]\n` +
+                       `flat(2): [${nested.flat(2).join(', ')}]`;
+            }
+        },
+        {
+            title: '54. URLクエリパラメータの解析',
+            func: () => {
+                const url = '?id=123&name=test&lang=js';
+                const params = new URLSearchParams(url);
+                const result = {
+                    id: params.get('id'),
+                    name: params.get('name'),
+                    lang: params.get('lang')
+                };
+                return `クエリ: ${url}\n解析後: ${JSON.stringify(result)}`;
+            }
+        },
+        {
+            title: '55. ディープコピー（簡易版）',
+            func: () => {
+                const original = { a: 1, b: { c: 2 } };
+                const copied = JSON.parse(JSON.stringify(original));
+                copied.b.c = 99; // コピーを変更
+                return `コピー元のb.c: ${original.b.c}\n` +
+                       `コピー後のb.c: ${copied.b.c}`;
+            }
+        },
+        {
+            title: '56. イベントデリゲーション',
+            func: (card) => {
+                const resultDiv = card.querySelector('.result');
+                resultDiv.innerHTML = `<p>下のボタンのどれかを押してください。</p>
+                    <div id="parent-div" style="padding: 10px; border: 1px solid #ccc;">
+                        <button class="dom-button">ボタン1</button>
+                        <button class="dom-button">ボタン2</button>
+                        <button class="dom-button">ボタン3</button>
+                    </div>`;
+                
+                const parent = resultDiv.querySelector('#parent-div');
+                parent.addEventListener('click', (event) => {
+                    if (event.target.tagName === 'BUTTON') {
+                        resultDiv.querySelector('p').textContent = `${event.target.textContent}がクリックされました。`;
+                    }
+                });
+                return null;
+            }
+        },
+        {
+            title: '57. localStorageへの保存と読み込み',
+            func: (card) => {
+                const resultDiv = card.querySelector('.result');
+                const key = 'myText';
+                
+                const input = document.createElement('input');
+                input.className = 'dom-input';
+                input.value = localStorage.getItem(key) || ''; // 保存された値を読み込む
+                
+                const saveBtn = document.createElement('button');
+                saveBtn.textContent = '保存';
+                saveBtn.className = 'dom-button';
+
+                saveBtn.addEventListener('click', () => {
+                    localStorage.setItem(key, input.value);
+                    p.textContent = `「${input.value}」を保存しました。リロードして確認してください。`;
+                });
+                
+                const p = document.createElement('p');
+                p.textContent = 'テキストを入力して保存ボタンを押してください。';
+
+                resultDiv.innerHTML = '';
+                resultDiv.appendChild(input);
+                resultDiv.appendChild(saveBtn);
+                resultDiv.appendChild(p);
+                return null;
+            }
+        },
+        {
+            title: '58. Promiseを使った非同期処理',
+            func: (card) => {
+                const resultDiv = card.querySelector('.result');
+                resultDiv.textContent = '処理中...';
+                
+                new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (Math.random() > 0.5) {
+                            resolve('成功しました！');
+                        } else {
+                            reject('失敗しました...');
+                        }
+                    }, 1000);
+                })
+                .then(message => {
+                    resultDiv.textContent = `結果: ${message}`;
+                    resultDiv.style.color = '#34d399'; // green-400
+                })
+                .catch(error => {
+                    resultDiv.textContent = `結果: ${error}`;
+                    resultDiv.style.color = '#f87171'; // red-400
+                });
+                return null;
+            }
+        },
+        {
+            title: '59. async/awaitを使った非同期処理',
+            func: (card) => {
+                const resultDiv = card.querySelector('.result');
+                resultDiv.textContent = '処理中...';
+                
+                const promiseFunc = () => new Promise(resolve => {
+                    setTimeout(() => resolve('async/awaitで成功！'), 1000);
+                });
+
+                const execute = async () => {
+                    try {
+                        const message = await promiseFunc();
+                        resultDiv.textContent = `結果: ${message}`;
+                    } catch (error) {
+                        resultDiv.textContent = `エラー: ${error}`;
+                    }
+                };
+                execute();
+                return null;
+            }
+        },
+        {
+            title: '60. Web API (Fetch) の利用',
+            func: async (card) => {
+                const resultDiv = card.querySelector('.result');
+                resultDiv.textContent = 'ユーザーデータを取得中...';
+                try {
+                    const response = await fetch('https://jsonplaceholder.typicode.com/users/1');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const user = await response.json();
+                    resultDiv.textContent = `取得したユーザー名: ${user.name}\nメール: ${user.email}`;
+                } catch (error) {
+                    resultDiv.textContent = `データの取得に失敗しました: ${error.message}`;
+                }
+                return null;
             }
         }
     ];
 
-    // 結果を表示するコンテナ
+    // --- ここから下は変更しないでください ---
     const resultsContainer = document.getElementById('results-container');
-
-    // スクリプトが読み込まれた時点で、各課題を実行して結果を表示
     if (!resultsContainer) {
         console.error('結果を表示するためのコンテナが見つかりません。');
         return;
     }
 
-    challenges.forEach(challenge => {
-        // カード要素を作成
+    challenges.forEach(async (challenge) => {
         const card = document.createElement('div');
         card.className = 'challenge-card';
 
-        // タイトルを作成
         const title = document.createElement('h3');
         title.textContent = challenge.title;
         card.appendChild(title);
 
-        // 結果表示エリアを作成
         const resultDiv = document.createElement('div');
         resultDiv.className = 'result';
         card.appendChild(resultDiv);
 
-        // コンテナにカードを追加
         resultsContainer.appendChild(card);
         
         try {
-            // 関数を実行して結果を取得
-            const result = challenge.func(card);
-
-            // 30番目の課題はDOMを直接操作するので、戻り値がnullの場合は何もしない
-            if (result !== null) {
-                // 結果がオブジェクトや配列の場合、見やすくするためにJSON文字列に変換
-                if (typeof result === 'object' && result !== null) {
+            // 非同期関数に対応
+            const result = await Promise.resolve(challenge.func(card));
+            
+            if (result !== null && result !== undefined) {
+                if (typeof result === 'object') {
                     resultDiv.textContent = JSON.stringify(result, null, 2);
                 } else {
                     resultDiv.textContent = result;
@@ -435,7 +479,7 @@
         } catch (error) {
             console.error(`課題 "${challenge.title}" でエラーが発生しました:`, error);
             resultDiv.textContent = `エラーが発生しました: ${error.message}`;
-            resultDiv.style.color = '#f87171'; // text-red-400
+            resultDiv.style.color = '#f87171';
         }
     });
 
