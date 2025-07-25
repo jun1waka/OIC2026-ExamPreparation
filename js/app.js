@@ -8,7 +8,11 @@
             title: '31. 配列の重複を削除',
             func: () => {
                 const array = [1, 2, 'a', 2, 3, 'b', 'a', 4, 5, 5];
-                const uniqueArray = [...new Set(array)];
+                // filterとindexOfを使い、配列内でその要素が最初に出現する位置のインデックスと
+                // 現在のインデックスが一致する要素のみを残す
+                const uniqueArray = array.filter((item, index) => {
+                    return array.indexOf(item) === index;
+                });
                 return `元の配列: [${array.join(', ')}]\n重複削除後: [${uniqueArray.join(', ')}]`;
             }
         },
