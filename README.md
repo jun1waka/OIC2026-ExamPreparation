@@ -1,4 +1,4 @@
-# OIC2025-Front08
+# OIC2026-ExamPreparation
 # JavaScript基礎力向上のための30本ノック
 
 ## 概要
